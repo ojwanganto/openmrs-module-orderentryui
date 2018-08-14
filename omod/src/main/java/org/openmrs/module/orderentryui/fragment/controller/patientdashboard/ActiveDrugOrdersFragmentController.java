@@ -4,8 +4,10 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.openmrs.Order;
 import org.openmrs.OrderType;
 import org.openmrs.Patient;
+import org.openmrs.User;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.PatientService;
+import org.openmrs.api.context.Context;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
 import org.openmrs.ui.framework.fragment.FragmentModel;
@@ -36,6 +38,7 @@ public class ActiveDrugOrdersFragmentController {
 
         model.addAttribute("patient", patient);
         model.addAttribute("activeDrugOrders", activeDrugOrders);
+
     }
 
 }

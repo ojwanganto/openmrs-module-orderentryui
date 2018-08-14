@@ -24,6 +24,9 @@ import java.util.Set;
 
 public class DrugOrdersPageController {
 
+    public static final String DRUG_ORDER = "7df67b83-1b84-4fe2-b1b7-794b4e9bfcc3";
+
+
     public void get(@RequestParam("patient") Patient patient,
                     @RequestParam(value = "careSetting", required = false) CareSetting careSetting,
                     @SpringBean("encounterService") EncounterService encounterService,
@@ -33,8 +36,11 @@ public class DrugOrdersPageController {
                     PageModel model) {
 
         // HACK
-        EncounterType drugOrderEncounterType = encounterService.getAllEncounterTypes(false).get(0);
-        EncounterRole encounterRoles = encounterService.getAllEncounterRoles(false).get(0);
+        // adding drug order encounter type
+
+
+        EncounterType drugOrderEncounterType = encounterService.getEncounterTypeByUuid(DRUG_ORDER);
+        EncounterRole encounterRoles = encounterService.getAllEncounterRoles(false).get(0); // Still wondering what this should refer to in KenyaEMR
 
         List<CareSetting> careSettings = orderService.getCareSettings(false);
 
@@ -55,9 +61,11 @@ public class DrugOrdersPageController {
         jsonConfig.put("durationUnits", convertToFull(orderService.getDurationUnits()));
         jsonConfig.put("quantityUnits", convertToFull(dispensingUnits)); // after TRUNK-4524 is fixed, change this to quantityUnits
         jsonConfig.put("frequencies", convertTo(orderService.getOrderFrequencies(false), new NamedRepresentation("fullconcept")));
-        if (careSetting != null) {
+        /*if (careSetting != null) {
             jsonConfig.put("intialCareSetting", careSetting.getUuid());
-        }
+        }*/
+
+        jsonConfig.put("intialCareSetting", "6f0c9a92-6f24-11e3-af88-005056821db0"); //defaulting to outpatient care-setting
 
         model.put("patient", patient);
         model.put("jsonConfig", ui.toJson(jsonConfig));
